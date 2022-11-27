@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  where:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - .:/where:cached
+
+    command: /bin/sh -c "while sleep 1000; do :; done"

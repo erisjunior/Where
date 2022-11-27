@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  firstName String
+  lastName  String
+  telphone  String
+  address   Address?
+  addressId String?  @unique
+  calls     Call[]
+  store     Store?
+  storeId   String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  city      String
+  country   String
+  state     String
+  zip       String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  calls     Call[]
+  stores    Store[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Store {
+  id          String     @id @default(cuid())
+  socialName  String
+  fantasyName String
+  cnpj        String
+  image       String?
+  answers     Answer[]
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String     @unique
+  categories  Category[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Call {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String
+  answers     Answer[]
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Answer {
+  id        String   @id @default(cuid())
+  message   String
+  call      Call     @relation(fields: [callId], references: [id])
+  callId    String
+  store     Store    @relation(fields: [storeId], references: [id])
+  storeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
