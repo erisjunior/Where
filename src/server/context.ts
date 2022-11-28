@@ -1,11 +1,9 @@
 import { inferAsyncReturnType } from '@trpc/server'
 
-import { prisma } from '~/utils/prisma'
+import { prisma } from '~/server'
 
 export async function createContext() {
-  return {
-    prisma
-  }
+  return { prisma }
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>
