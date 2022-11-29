@@ -14,6 +14,7 @@ model User {
   firstName String
   lastName  String
   telphone  String
+  email     String
   address   Address?
   addressId String?  @unique
   calls     Call[]
@@ -49,8 +50,9 @@ model Store {
   socialName  String
   fantasyName String
   cnpj        String
-  image       String?
   answers     Answer[]
+  image       Image?     @relation(fields: [imageId], references: [id])
+  imageId     String
   user        User       @relation(fields: [userId], references: [id])
   userId      String     @unique
   categories  Category[]
@@ -62,10 +64,11 @@ model Call {
   id          String   @id @default(cuid())
   title       String
   description String
-  image       String
   answers     Answer[]
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
+  image       Image    @relation(fields: [imageId], references: [id])
+  imageId     String
   user        User     @relation(fields: [userId], references: [id])
   userId      String
   createdAt   DateTime @default(now())
@@ -81,4 +84,14 @@ model Answer {
   storeId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  image     String
+  imageKey  String
+  Call      Call[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Store     Store[]
 }
