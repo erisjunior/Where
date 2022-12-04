@@ -1,13 +1,11 @@
 import { Header } from '~/presentation/components'
 
-import { Root } from './default-layout-styles'
-
 const DefaultLayout = ({ children }) => {
   return (
-    <Root>
+    <div>
       <Header />
       <main>{children}</main>
-    </Root>
+    </div>
   )
 }
 export default DefaultLayout

@@ -1,8 +1,8 @@
 import * as trpc from '@trpc/server'
-import { hash } from 'argon2'
+import { hash } from 'bcryptjs'
 
 import { signUpSchema } from '~/application/models'
-import { procedure } from '~/server'
+import { procedure } from '~/server/trpc'
 
 export const signUp = procedure
   .input(signUpSchema)
@@ -18,7 +18,7 @@ export const signUp = procedure
       })
     }
 
-    const hashedPassword = await hash(input.password)
+    const hashedPassword = await hash(input.password, 10)
 
     const result = await ctx.prisma.user.create({
       data: { ...input, password: hashedPassword }

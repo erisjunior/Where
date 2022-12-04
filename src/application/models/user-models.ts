@@ -4,7 +4,7 @@ import { validateCpf } from '~/application/common/validators'
 
 export const signInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(4).max(12)
+  password: z.string().min(6)
 })
 
 export const signUpSchema = signInSchema.extend({

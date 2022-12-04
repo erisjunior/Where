@@ -1,4 +1,4 @@
-import { verify } from 'argon2'
+import { compare } from 'bcryptjs'
 import { NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
@@ -32,7 +32,7 @@ export const nextAuthOptions: NextAuthOptions = {
           return null
         }
 
-        const isValidPassword = await verify(user.password, password)
+        const isValidPassword = await compare(user.password, password)
 
         if (!isValidPassword) {
           return null

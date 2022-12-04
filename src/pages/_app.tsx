@@ -1,8 +1,8 @@
 import '@fontsource/poppins'
 import type { AppProps } from 'next/app'
 
+import { trpcNext } from '~/application/config/trpc-next'
 import { ProviderComposition } from '~/presentation/providers'
-import { trpcNext } from '~/server'
 import '~/presentation/styles/globals.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
