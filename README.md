@@ -25,6 +25,12 @@ npx prisma migrate dev
 npx prisma migrate deploy
 ```
 
+## Prisma Studio
+
+```bash
+npx prisma studio
+```
+
 ## Used Technologies
 
 - React
@@ -35,3 +41,6 @@ npx prisma migrate deploy
 - Zod
 - Prisma
 - PostgreSQL
+- NextAuth
+- React Hook Form
+- Multer
