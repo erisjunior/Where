@@ -1,4 +1,5 @@
-import { Header } from '../../components'
+import { Header } from '~/presentation/components'
+
 import { Root } from './default-layout-styles'
 
 const DefaultLayout = ({ children }) => {

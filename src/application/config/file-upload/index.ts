@@ -8,6 +8,7 @@ export const destination = path.resolve(
   __dirname,
   '..',
   '..',
+  '..',
   'temp',
   'uploads'
 )

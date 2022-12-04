@@ -3,7 +3,7 @@ import { NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
 import { signInSchema } from '~/application/models'
-import { Routes } from '~/presentation/common/constants'
+import { Routes } from '~/presentation/common/router'
 import { prisma } from '~/server'
 
 export const nextAuthOptions: NextAuthOptions = {
