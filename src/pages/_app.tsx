@@ -1,13 +1,13 @@
 import '@fontsource/poppins'
-import type { AppType } from 'next/app'
+import type { AppProps } from 'next/app'
 
 import { ProviderComposition } from '~/presentation/providers'
-import '~/presentation/styles/globals.css'
 import { trpcNext } from '~/server'
+import '~/presentation/styles/globals.css'
 
-const App: AppType = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ProviderComposition>
+    <ProviderComposition session={pageProps.session}>
       <Component {...pageProps} />
     </ProviderComposition>
   )
