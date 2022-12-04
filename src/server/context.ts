@@ -3,7 +3,7 @@ import * as TRPCNextAdapter from '@trpc/server/adapters/next'
 import { unstable_getServerSession } from 'next-auth'
 
 import { nextAuthOptions } from '~/application/config/auth'
-import { prisma } from '~/server'
+import { prisma } from '~/server/prisma'
 
 export async function createContext(
   ctx: TRPCNextAdapter.CreateNextContextOptions

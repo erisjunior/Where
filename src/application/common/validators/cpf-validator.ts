@@ -1,6 +1,6 @@
 export const validateCpf = (cpf: string) => {
   cpf = cpf.replace(/[^\d]+/g, '')
-  if (cpf === '') return false
+  if (!cpf) return false
   if (
     cpf.length !== 11 ||
     cpf === '00000000000' ||

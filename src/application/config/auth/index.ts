@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials'
 
 import { signInSchema } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
-import { prisma } from '~/server'
+import { prisma } from '~/server/prisma'
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
