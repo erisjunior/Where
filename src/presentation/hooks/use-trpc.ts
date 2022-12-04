@@ -1,5 +1,5 @@
 import { trpcNext } from '~/server'
 
 export const {
-  createUser: { useMutation: useCreateUserMutation }
+  signUp: { useMutation: useSignUpMutation }
 } = trpcNext
