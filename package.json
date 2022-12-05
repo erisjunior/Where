@@ -22,7 +22,6 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
     "aws-sdk": "^2.1267.0",
-    "axios": "^1.2.0",
     "bcryptjs": "^2.4.3",
     "crypto": "^1.0.1",
     "date-fns": "^2.29.3",

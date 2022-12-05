@@ -5,20 +5,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { signUpSchema, SignUp } from '~/application/models'
+import { signUpSchema, User } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { useSignUpMutation } from '~/presentation/hooks'
 
 export default function Register() {
   const router = useRouter()
-  const { register, handleSubmit } = useForm<SignUp>({
+  const { register, handleSubmit } = useForm<User.SignUp>({
     resolver: zodResolver(signUpSchema)
   })
 
   const { mutateAsync: signUp } = useSignUpMutation()
 
   const onSubmit = useCallback(
-    async (data: SignUp) => {
+    async (data: User.SignUp) => {
       const result = await signUp(data)
       if (result.status === 201) {
         router.push(Routes.LOGIN)

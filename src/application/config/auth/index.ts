@@ -68,7 +68,6 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   pages: {
     signIn: Routes.LOGIN,
-    newUser: Routes.REGISTER,
     error: Routes.NOT_FOUND
   }
 }
