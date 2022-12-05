@@ -1,12 +1,7 @@
 import { memo } from 'react'
 
-type Props = {
-  variant?: 'borderless' | 'filled' | 'ghost'
-  color?: 'primary' | 'destructive'
-}
-
-export const Header = memo(({ ...props }: Props) => {
-  return <div {...props} />
+export const Header = memo(() => {
+  return <div />
 })
 
 Header.displayName = 'Header'

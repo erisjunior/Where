@@ -6,14 +6,9 @@ import type { ServerRouter } from '~/server/router'
 function getBaseUrl() {
   if (typeof window !== 'undefined') return ''
 
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  if (!process.env.APP_URL) return ''
 
-  const port = process.env.PORT ?? 3000
-
-  if (process.env.RENDER_INTERNAL_HOSTNAME)
-    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${port}`
-
-  return `http://localhost:${port}`
+  return process.env.APP_URL
 }
 
 export const trpcNext = createTRPCNext<ServerRouter>({

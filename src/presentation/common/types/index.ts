@@ -1,1 +1,1 @@
-export * from './infinite-scroll-context-props'
+export * from './color-mode-context-props'

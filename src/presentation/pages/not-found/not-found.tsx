@@ -1,15 +1,9 @@
-import Head from 'next/head'
-
-export default function NotFound() {
+const NotFound = () => {
   return (
-    <div>
-      <Head>
-        <title>Where</title>
-        <meta name='description' content='Where' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
-      <main></main>
-    </div>
+    <main>
+      <h2>Not Found</h2>
+    </main>
   )
 }
+
+export default NotFound

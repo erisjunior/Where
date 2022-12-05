@@ -2,7 +2,7 @@ import * as trpc from '@trpc/server'
 import { hash } from 'bcryptjs'
 
 import { signUpSchema } from '~/application/models'
-import { procedure } from '~/server/trpc'
+import { procedure } from '~/server'
 
 export const signUp = procedure
   .input(signUpSchema)

@@ -64,11 +64,11 @@ export const nextAuthOptions: NextAuthOptions = {
     }
   },
   jwt: {
-    maxAge: 15 * 24 * 30 * 60 // 15 days
+    maxAge: 15 * 24 * 30 * 60
   },
   pages: {
-    signIn: Routes.HOME,
-    newUser: Routes.HOME,
+    signIn: Routes.LOGIN,
+    newUser: Routes.REGISTER,
     error: Routes.NOT_FOUND
   }
 }
