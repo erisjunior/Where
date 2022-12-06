@@ -13,9 +13,9 @@ model User {
   password  String
   firstName String
   lastName  String
-  telphone  String   @unique
+  telphone  String?  @unique
   email     String
-  cpf       String   @unique
+  cpf       String?  @unique
   address   Address?
   addressId String?  @unique
   calls     Call[]

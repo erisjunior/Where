@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { validateCpf } from '~/application/common/validators'
+import { cpfSchema } from '../common/schemas'
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -8,15 +8,15 @@ export const signInSchema = z.object({
 })
 
 export const signUpSchema = signInSchema.extend({
-  username: z.string(),
-  password: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
-  telphone: z.string(),
-  cpf: z.string().refine(validateCpf, { message: 'Invalid CPF.' })
+  username: z.string().min(6),
+  firstName: z.string().min(1).max(18),
+  lastName: z.string().min(1).max(18)
 })
 
-export const userSchema = signUpSchema.extend({})
+export const userSchema = signUpSchema.extend({
+  telphone: z.string().min(10).max(14).nullable(),
+  cpf: cpfSchema.nullable()
+})
 
 export namespace User {
   export type Model = z.infer<typeof userSchema>
@@ -26,6 +26,6 @@ export namespace User {
 
   export enum Messages {
     CREATED = 'User created successfully',
-    CONFLICT = 'Email or username already in use'
+    CONFLICT = 'One of the following informations are already in use: Username or Email'
   }
 }

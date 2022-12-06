@@ -10,7 +10,9 @@ export const signUp = procedure
   .output(responseSchema.extend({ data: userSchema }))
   .mutation(async ({ input, ctx }) => {
     const exists = await ctx.prisma.user.findFirst({
-      where: { OR: [{ email: input.email }, { username: input.username }] }
+      where: {
+        OR: [{ email: input.email }, { username: input.username }]
+      }
     })
 
     if (exists) {

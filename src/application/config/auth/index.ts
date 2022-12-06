@@ -13,8 +13,7 @@ export const nextAuthOptions: NextAuthOptions = {
       credentials: {
         email: {
           label: 'Email',
-          type: 'email',
-          placeholder: 'email@gmail.com'
+          type: 'email'
         },
         password: {
           label: 'Password',
@@ -32,7 +31,7 @@ export const nextAuthOptions: NextAuthOptions = {
           return null
         }
 
-        const isValidPassword = await compare(user.password, password)
+        const isValidPassword = await compare(password, user.password)
 
         if (!isValidPassword) {
           return null

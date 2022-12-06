@@ -1,17 +1,20 @@
 import { useCallback } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 import { signUpSchema, User } from '~/application/models'
+import { classNames } from '~/presentation/common/helpers'
 import { Routes } from '~/presentation/common/router'
+import { Input } from '~/presentation/components'
 import { useSignUpMutation } from '~/presentation/hooks'
 
+import { inputClass } from './utils'
+
 export default function Register() {
-  const router = useRouter()
-  const { register, handleSubmit } = useForm<User.SignUp>({
+  const formMethods = useForm<User.SignUp>({
     resolver: zodResolver(signUpSchema)
   })
 
@@ -19,43 +22,93 @@ export default function Register() {
 
   const onSubmit = useCallback(
     async (data: User.SignUp) => {
-      const result = await signUp(data)
-      if (result.status === 201) {
-        router.push(Routes.LOGIN)
-      }
+      try {
+        await signUp(data)
+        await signIn('credentials', {
+          email: data.email,
+          password: data.password,
+          callbackUrl: Routes.DASHBOARD
+        })
+      } catch (error) {}
     },
-    [signUp, router]
+    [signUp]
   )
 
   return (
     <main>
-      <form
-        className='flex items-center justify-center h-screen w-full'
-        onSubmit={() => handleSubmit(onSubmit)}
-      >
-        <h2>Register</h2>
-        <input
-          type='text'
-          placeholder='Type your username...'
-          {...register('username')}
-        />
-        <input
-          type='email'
-          placeholder='Type your email...'
-          {...register('email')}
-        />
-        <input
-          type='password'
-          placeholder='Type your password...'
-          {...register('password')}
-        />
-        <div>
-          <Link href={Routes.LOGIN} className='link'>
-            Go to login
-          </Link>
-          <button type='submit'>Register</button>
+      <div className='flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='w-full max-w-md space-y-8'>
+          <div>
+            <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
+              Crie uma conta agora
+            </h2>
+          </div>
+          <FormProvider {...formMethods}>
+            <form
+              className='mt-8 space-y-6'
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+            >
+              <div className='-space-y-px rounded-md shadow-sm'>
+                <Input
+                  name='email'
+                  type='email'
+                  autoComplete='email'
+                  required
+                  className={classNames(inputClass, 'rounded-t-md')}
+                  placeholder='Email'
+                />
+                <Input
+                  id='password'
+                  name='password'
+                  type='password'
+                  autoComplete='current-password'
+                  required
+                  className={inputClass}
+                  placeholder='Password'
+                />
+                <Input
+                  name='username'
+                  type='text'
+                  required
+                  className={inputClass}
+                  placeholder='Username'
+                />
+                <Input
+                  name='firstName'
+                  type='text'
+                  required
+                  className={inputClass}
+                  placeholder='First Name'
+                />
+                <Input
+                  name='lastName'
+                  type='text'
+                  required
+                  className={classNames(inputClass, 'rounded-b-md')}
+                  placeholder='Last Name'
+                />
+              </div>
+
+              <div>
+                <button
+                  type='submit'
+                  className='group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                >
+                  Cadastrar
+                </button>
+                <p className='mt-2 text-center text-sm text-gray-600'>
+                  <Link
+                    href={Routes.LOGIN}
+                    className='font-medium text-indigo-600 hover:text-indigo-500'
+                  >
+                    Entre na sua conta
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </FormProvider>
         </div>
-      </form>
+      </div>
     </main>
   )
 }
