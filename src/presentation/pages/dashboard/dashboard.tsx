@@ -1,16 +1,13 @@
-import { useSession, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 const Dashboard = () => {
-  useSession({ required: true })
-
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' })
-  }
+  const { data: user } = useSession()
 
   return (
-    <div>
+    <main>
+      {!user && <p>Loading</p>}
       <h2>Dashboard</h2>
-    </div>
+    </main>
   )
 }
 

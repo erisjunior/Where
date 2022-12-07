@@ -22,7 +22,8 @@ export const signUp = procedure
     const hashedPassword = await hash(input.password, 10)
 
     const response = await ctx.prisma.user.create({
-      data: { ...input, password: hashedPassword }
+      data: { ...input, password: hashedPassword },
+      select: User.prisma.userSelect
     })
 
     return createdResponse({
