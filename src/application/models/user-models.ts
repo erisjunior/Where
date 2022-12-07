@@ -1,6 +1,9 @@
+import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
-import { cpfSchema } from '../common/schemas'
+import { cpfSchema } from '~/application/common/schemas'
+
+import { Address } from './address-models'
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -27,5 +30,23 @@ export namespace User {
   export enum Messages {
     CREATED = 'User created successfully',
     CONFLICT = 'One of the following informations are already in use: Username or Email'
+  }
+
+  export const prisma = {
+    userSelect: Prisma.validator<Prisma.UserSelect>()({
+      username: true,
+      firstName: true,
+      lastName: true,
+      email: true
+    }),
+    userSelectWithAddress: Prisma.validator<Prisma.UserSelect>()({
+      username: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      address: {
+        select: Address.prisma.addressSelect
+      }
+    })
   }
 }
