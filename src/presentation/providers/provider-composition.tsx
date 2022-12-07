@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import { DefaultLayout } from '~/presentation/layouts'
 
-import ColorModeProvider from './color-mode-provider'
+import { ColorModeProvider } from './'
 
 type Props = {
   children: React.ReactNode

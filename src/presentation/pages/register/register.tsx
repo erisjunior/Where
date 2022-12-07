@@ -11,7 +11,8 @@ import { Routes } from '~/presentation/common/router'
 import { Input } from '~/presentation/components'
 import { useSignUpMutation } from '~/presentation/hooks'
 
-import { inputClass } from './utils'
+const inputClass =
+  'relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 
 export default function Register() {
   const formMethods = useForm<User.SignUp>({
@@ -54,11 +55,10 @@ export default function Register() {
                   type='email'
                   autoComplete='email'
                   required
-                  className={classNames(inputClass, 'rounded-t-md')}
+                  className={classNames(inputClass, 'rounded-md')}
                   placeholder='Email'
                 />
                 <Input
-                  id='password'
                   name='password'
                   type='password'
                   autoComplete='current-password'
