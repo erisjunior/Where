@@ -1,25 +1,25 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
-import { createCallSchema } from '~/application/models'
+import { createStoreSchema } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { Button, Input } from '~/presentation/components'
 import {
-  useCreateCallMutation,
+  useCreateStoreMutation,
   useGetCategoriesQuery
 } from '~/presentation/hooks'
 
 const inputClass =
   'relative block w-full rounded mt-2 appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 
-const formSchema = createCallSchema.omit({ categoryId: true })
+const formSchema = createStoreSchema.omit({ categoryId: true })
 type Form = z.infer<typeof formSchema>
 
-export default function CreateCall() {
+export default function CreateStore() {
   const router = useRouter()
   const formMethods = useForm<Form>({
     resolver: zodResolver(formSchema)
@@ -29,7 +29,7 @@ export default function CreateCall() {
 
   const [category, setCategory] = useState('')
 
-  const { mutateAsync: createCall } = useCreateCallMutation()
+  const { mutateAsync: createStore } = useCreateStoreMutation()
 
   useEffect(() => {
     if ((categories?.data.length ?? 0) > 0) {
@@ -40,11 +40,11 @@ export default function CreateCall() {
   const onSubmit = useCallback(
     async (data: Form) => {
       try {
-        await createCall({ ...data, categoryId: category })
-        router.push(Routes.CALLS)
+        await createStore({ ...data, categoryId: category })
+        router.push(Routes.STORE)
       } catch (error) {}
     },
-    [createCall, category]
+    [createStore, category]
   )
 
   return (
@@ -52,7 +52,7 @@ export default function CreateCall() {
       <div className='w-full max-w-md space-y-8'>
         <div>
           <h2 className='mt-6 text-center text-3xl font-bold tracking-tight text-gray-900'>
-            Crie um chamado
+            Crie sua loja
           </h2>
         </div>
         <FormProvider {...formMethods}>
@@ -61,25 +61,25 @@ export default function CreateCall() {
             onSubmit={formMethods.handleSubmit(onSubmit)}
           >
             <Input
-              name='title'
+              name='socialName'
               type='text'
               required
               className={inputClass}
-              placeholder='Title'
+              placeholder='Nome Social'
             />
             <Input
-              name='description'
+              name='fantasyName'
               type='text'
               required
               className={inputClass}
-              placeholder='Description'
+              placeholder='Nome Fantasia'
             />
             <Input
-              name='image'
+              name='cnpj'
               type='text'
               required
               className={inputClass}
-              placeholder='Image Url'
+              placeholder='CNPJ'
             />
             <select className='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'>
               {categories?.data.map((category) => (

@@ -5,7 +5,7 @@ export const {
 
   createAddress: { useMutation: useCreateAddressMutation },
 
-  createAnswer: { useMutation: usecrCateAnswerMutation },
+  createAnswer: { useMutation: useCreateAnswerMutation },
 
   createCall: { useMutation: useCreateCallMutation },
   getCalls: { useQuery: useGetCallsQuery },
@@ -14,5 +14,6 @@ export const {
   createCategory: { useMutation: useCreateCategoryMutation },
   getCategories: { useQuery: useGetCategoriesQuery },
 
-  createStore: { useMutation: usecCeateStoreMutation }
+  createStore: { useMutation: useCreateStoreMutation },
+  getStore: { useQuery: useGetStoreQuery }
 } = trpcNext

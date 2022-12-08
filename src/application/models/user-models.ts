@@ -16,7 +16,11 @@ export const signUpSchema = signInSchema.extend({
   lastName: z.string().min(1).max(18)
 })
 
-export const userSchema = signUpSchema.extend({
+export const userSchema = z.object({
+  email: z.string().email(),
+  username: z.string().min(6),
+  firstName: z.string().min(1).max(18),
+  lastName: z.string().min(1).max(18),
   telphone: z.string().min(10).max(14).nullable(),
   cpf: cpfSchema.nullable()
 })
