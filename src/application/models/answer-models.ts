@@ -1,12 +1,22 @@
 import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
-import { Store, storeSchema } from './store-models'
+import { Store, storeSchemaWithImages } from './store-models'
 
 export const answerSchema = z.object({
   id: z.string(),
   message: z.string(),
-  store: storeSchema,
+  store: storeSchemaWithImages
+})
+
+export const answerDefaultSchema = z.object({
+  id: z.string(),
+  message: z.string()
+})
+
+export const createAnswerSchema = z.object({
+  message: z.string(),
+  storeId: z.string(),
   callId: z.string()
 })
 
