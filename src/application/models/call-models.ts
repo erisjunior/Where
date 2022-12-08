@@ -29,6 +29,10 @@ export const getCallSchema = z.object({
   id: z.string()
 })
 
+export const getCallsSchema = z.object({
+  category: z.string().optional()
+})
+
 export namespace Call {
   export type Model = z.infer<typeof callSchema>
 

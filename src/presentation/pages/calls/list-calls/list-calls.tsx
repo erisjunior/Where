@@ -10,7 +10,7 @@ import { useGetCallsQuery } from '~/presentation/hooks'
 
 const ListCalls = () => {
   const { data: session } = useSession()
-  const { data, isLoading, refetch } = useGetCallsQuery()
+  const { data, isLoading, refetch } = useGetCallsQuery({})
 
   useEffect(() => {
     if (!session) return

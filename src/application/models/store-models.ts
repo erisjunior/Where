@@ -1,18 +1,32 @@
 import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
-import { Address } from './address-models'
-import { User, userSchema } from './user-models'
+import { categorySchema } from './category-models'
+import { imageSchema } from './image-models'
 
 export const createStoreSchema = z.object({
   socialName: z.string(),
   fantasyName: z.string(),
   cnpj: z.string(),
-  user: userSchema
+  categoryId: z.string()
 })
 
-export const storeSchema = createStoreSchema.extend({
-  user: userSchema
+export const storeSchema = createStoreSchema.extend({})
+
+export const storeSchemaWithCategoriesAndImage = z.object({
+  id: z.string(),
+  socialName: z.string(),
+  fantasyName: z.string(),
+  cnpj: z.string(),
+  categories: categorySchema.array(),
+  image: imageSchema
+})
+
+export const storeSchemaWithImages = z.object({
+  socialName: z.string(),
+  fantasyName: z.string(),
+  cnpj: z.string(),
+  image: imageSchema
 })
 
 export namespace Store {
@@ -21,19 +35,13 @@ export namespace Store {
   export type CreateStore = z.infer<typeof createStoreSchema>
 
   export enum Messages {
-    CREATED = 'Store created successfully'
+    CREATED = 'Store created successfully',
+    LISTED = 'Store listed successfully'
   }
 
   export const prisma = {
     includeUserWithAddress: Prisma.validator<Prisma.StoreInclude>()({
-      user: {
-        select: {
-          ...User.prisma.select,
-          address: {
-            include: Address.prisma.includeCityWithState
-          }
-        }
-      }
+      image: true
     })
   }
 }

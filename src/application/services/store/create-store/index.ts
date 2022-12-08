@@ -1,21 +1,42 @@
 import { responseSchema, createdResponse } from '~/application/common/responses'
-import { Store, storeSchema, createStoreSchema } from '~/application/models'
+import {
+  Store,
+  createStoreSchema,
+  storeSchemaWithCategoriesAndImage
+} from '~/application/models'
 import { protectedProcedure } from '~/server'
 
 export const createStore = protectedProcedure
   .input(createStoreSchema)
-  .output(responseSchema.extend({ data: storeSchema }))
+  .output(responseSchema.extend({ data: storeSchemaWithCategoriesAndImage }))
   .mutation(async ({ input, ctx }) => {
+    const { categoryId, ...store } = input
     const response = await ctx.prisma.store.create({
       data: {
-        ...input,
+        ...store,
+        categories: {
+          connect: {
+            id: categoryId
+          }
+        },
         user: {
           connect: {
             id: ctx.session.user.id
           }
+        },
+        image: {
+          create: {
+            image:
+              'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+            imageKey:
+              'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
+          }
         }
       },
-      include: Store.prisma.includeUserWithAddress
+      include: {
+        categories: true,
+        image: true
+      }
     })
 
     return createdResponse({
