@@ -1,6 +1,7 @@
 export enum Routes {
   HOME = '/',
   CALLS = '/calls',
+  CALL = '/call/:id',
   CREATE_CALL = '/create-call',
   LOGIN = '/login',
   REGISTER = '/register',

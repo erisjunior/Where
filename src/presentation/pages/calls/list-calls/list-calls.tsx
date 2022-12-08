@@ -5,10 +5,10 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { Routes } from '~/presentation/common/router'
+import { generatePath, Routes } from '~/presentation/common/router'
 import { useGetCallsQuery } from '~/presentation/hooks'
 
-const Dashboard = () => {
+const ListCalls = () => {
   const { data: session } = useSession()
   const { data, isLoading, refetch } = useGetCallsQuery()
 
@@ -34,29 +34,33 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
-      <div className='grid mt-5 gap-1'>
+      <div className='grid mt-5 gap-2'>
         <span className='w-fit bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900'>
           {data?.data.length ?? 0} Chamados
         </span>
         {isLoading && <p>Carregando...</p>}
         {data?.data.map((call) => (
-          <div className='flex items-center' key={call.id}>
+          <Link
+            key={call.id}
+            href={generatePath(Routes.CALL, { id: call.id })}
+            className='flex items-center p-2 hover:bg-indigo-100 rounded'
+          >
             <Image
               className='h-10 w-10 rounded-full '
-              src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+              src={call.image.image}
               alt='profile'
               width={40}
               height={40}
             />
-            <div>
+            <div className='ml-2'>
               <p>{call.title}</p>
-              <span>{call.category.name}</span>
+              <span className='text-xs'>{call.category.name}</span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
   )
 }
 
-export default Dashboard
+export default ListCalls

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { Store, storeSchema } from './store-models'
 
 export const answerSchema = z.object({
+  id: z.string(),
   message: z.string(),
   store: storeSchema,
   callId: z.string()

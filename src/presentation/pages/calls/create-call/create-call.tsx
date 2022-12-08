@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,14 +8,15 @@ import { z } from 'zod'
 import { createCallSchema } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { Button, Input } from '~/presentation/components'
-import { useCreateCallMutation } from '~/presentation/hooks'
+import {
+  useCreateCallMutation,
+  useGetCategoriesQuery
+} from '~/presentation/hooks'
 
 const inputClass =
   'relative block w-full rounded mt-2 appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 
-const formSchema = createCallSchema.omit({ categoryId: true }).extend({
-  category: z.string()
-})
+const formSchema = createCallSchema.omit({ categoryId: true })
 type Form = z.infer<typeof formSchema>
 
 export default function CreateCall() {
@@ -24,16 +25,27 @@ export default function CreateCall() {
     resolver: zodResolver(formSchema)
   })
 
+  const { data: categories } = useGetCategoriesQuery()
+
+  const [category, setCategory] = useState('')
+
   const { mutateAsync: createCall } = useCreateCallMutation()
+
+  useEffect(() => {
+    if ((categories?.data.length ?? 0) > 0) {
+      setCategory(categories?.data[0].id as string)
+    }
+  }, [categories, setCategory])
 
   const onSubmit = useCallback(
     async (data: Form) => {
       try {
-        await createCall({ ...data, categoryId: data.category })
+        console.log(category)
+        await createCall({ ...data, categoryId: category })
         router.push(Routes.CALLS)
       } catch (error) {}
     },
-    [createCall]
+    [createCall, category]
   )
 
   return (
@@ -70,13 +82,17 @@ export default function CreateCall() {
               className={inputClass}
               placeholder='Image Url'
             />
-            <Input
-              name='category'
-              type='text'
-              required
-              className={inputClass}
-              placeholder='Category'
-            />
+            <select className='border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'>
+              {categories?.data.map((category) => (
+                <option
+                  key={category.id}
+                  value={category.id}
+                  onClick={() => setCategory(category.id)}
+                >
+                  {category.name}
+                </option>
+              ))}
+            </select>
             <div>
               <Button
                 type='submit'

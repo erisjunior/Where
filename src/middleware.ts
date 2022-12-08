@@ -1,3 +1,3 @@
 export { default } from 'next-auth/middleware'
 
-export const config = { matcher: ['/calls', '/create-call'] }
+export const config = { matcher: ['/calls', '/create-call', '/call/:id'] }

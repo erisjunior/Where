@@ -6,8 +6,11 @@ export const createCall = protectedProcedure
   .input(createCallSchema)
   .output(responseSchema.extend({ data: callSchema }))
   .mutation(async ({ input, ctx }) => {
-    const response = await ctx.prisma.call.create({
-      data: {
+    const response = await ctx.prisma.call.upsert({
+      where: {
+        id: input.id ?? ''
+      },
+      create: {
         title: input.title,
         description: input.description,
         category: {
@@ -24,6 +27,16 @@ export const createCall = protectedProcedure
         user: {
           connect: {
             id: ctx.session.user.id
+          }
+        }
+      },
+      update: {
+        title: input.title,
+        description: input.description,
+        image: {
+          update: {
+            image: input.image,
+            imageKey: input.image
           }
         }
       },

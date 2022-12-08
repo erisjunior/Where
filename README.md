@@ -33,14 +33,14 @@ npx prisma studio
 
 ## Used Technologies
 
+- TypeScript
 - React
 - Next.js
-- TypeScript
 - Tailwind CSS
-- TRPC
+- React Hook Form
 - Zod
+- tRPC
 - Prisma
 - PostgreSQL
 - NextAuth
-- React Hook Form
 - Multer

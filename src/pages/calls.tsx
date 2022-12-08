@@ -1,3 +1,3 @@
-import { Calls } from '~/presentation/pages'
+import { ListCalls } from '~/presentation/pages'
 
-export default Calls
+export default ListCalls

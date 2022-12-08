@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client'
 import { z } from 'zod'
 
+import { Address } from './address-models'
 import { User, userSchema } from './user-models'
 
 export const createStoreSchema = z.object({
@@ -26,8 +27,12 @@ export namespace Store {
   export const prisma = {
     includeUserWithAddress: Prisma.validator<Prisma.StoreInclude>()({
       user: {
-        select: User.prisma.select,
-        include: User.prisma.includeAddress
+        select: {
+          ...User.prisma.select,
+          address: {
+            include: Address.prisma.includeCityWithState
+          }
+        }
       }
     })
   }
