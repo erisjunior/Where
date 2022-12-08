@@ -18,12 +18,7 @@ export namespace Address {
   }
 
   export const prisma = {
-    addressSelect: Prisma.validator<Prisma.AddressSelect>()({
-      id: true,
-      street: true,
-      number: true,
-      complementary: true,
-      zip: true,
+    includeCityWithState: Prisma.validator<Prisma.AddressInclude>()({
       city: {
         include: {
           state: true

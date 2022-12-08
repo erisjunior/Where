@@ -24,13 +24,10 @@ export namespace Store {
   }
 
   export const prisma = {
-    storeSelect: Prisma.validator<Prisma.StoreSelect>()({
-      id: true,
-      socialName: true,
-      fantasyName: true,
-      cnpj: true,
+    includeUserWithAddress: Prisma.validator<Prisma.StoreInclude>()({
       user: {
-        select: User.prisma.userSelectWithAddress
+        select: User.prisma.select,
+        include: User.prisma.includeAddress
       }
     })
   }

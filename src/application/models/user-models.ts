@@ -33,19 +33,17 @@ export namespace User {
   }
 
   export const prisma = {
-    userSelect: Prisma.validator<Prisma.UserSelect>()({
+    select: Prisma.validator<Prisma.UserSelect>()({
       username: true,
       firstName: true,
       lastName: true,
-      email: true
-    }),
-    userSelectWithAddress: Prisma.validator<Prisma.UserSelect>()({
-      username: true,
-      firstName: true,
-      lastName: true,
+      telphone: true,
       email: true,
+      cpf: true
+    }),
+    includeAddress: Prisma.validator<Prisma.UserInclude>()({
       address: {
-        select: Address.prisma.addressSelect
+        include: Address.prisma.includeCityWithState
       }
     })
   }
