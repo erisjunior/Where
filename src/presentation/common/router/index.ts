@@ -1,6 +1,7 @@
 export enum Routes {
   HOME = '/',
-  DASHBOARD = '/dashboard',
+  CALLS = '/calls',
+  CREATE_CALL = '/create-call',
   LOGIN = '/login',
   REGISTER = '/register',
   NOT_FOUND = '/not-found'
@@ -8,7 +9,7 @@ export enum Routes {
 
 export const routesDefinitions = [
   { name: 'Home', path: Routes.HOME },
-  { name: 'Dashboard', path: Routes.DASHBOARD, private: true }
+  { name: 'Calls', path: Routes.CALLS, private: true }
 ]
 
 export const generatePath = (

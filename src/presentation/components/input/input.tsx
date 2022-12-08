@@ -25,7 +25,7 @@ export const Input = memo(({ name, ...props }: Props) => {
         {name}
       </label>
       <input id={name} {...props} {...register(name)} />
-      {errors[name] && <span>{errorMessage}</span>}
+      {errors[name] && <span className='text-red-400'>{errorMessage}</span>}
     </div>
   )
 })

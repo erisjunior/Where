@@ -6,40 +6,38 @@ export const createAddress = protectedProcedure
   .input(addressSchema)
   .output(responseSchema.extend({ data: addressSchema }))
   .mutation(async ({ input, ctx }) => {
+    const { city, state, ...address } = input
     const response = await ctx.prisma.address.create({
       data: {
-        street: input.street,
-        number: input.number,
-        complementary: input.complementary,
-        zip: input.zip,
-        user: {
-          connect: {
-            id: ctx.session.user.id
-          }
-        },
+        ...address,
         city: {
           connectOrCreate: {
             where: {
-              id: input.city
+              id: city
             },
             create: {
-              name: input.city,
+              name: city,
               state: {
                 connectOrCreate: {
                   where: {
-                    id: input.state
+                    id: state
                   },
                   create: {
-                    name: input.state,
-                    initials: input.state
+                    name: state,
+                    initials: state
                   }
                 }
               }
             }
           }
+        },
+        user: {
+          connect: {
+            id: ctx.session.user.id
+          }
         }
       },
-      select: Address.prisma.addressSelect
+      include: Address.prisma.includeCityWithState
     })
 
     const formatedResponse: Address.Model = {

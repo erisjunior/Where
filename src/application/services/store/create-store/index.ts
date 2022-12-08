@@ -15,7 +15,7 @@ export const createStore = protectedProcedure
           }
         }
       },
-      select: Store.prisma.storeSelect
+      include: Store.prisma.includeUserWithAddress
     })
 
     return createdResponse({
