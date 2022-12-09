@@ -12,8 +12,8 @@ export enum Routes {
 
 export const routesDefinitions = [
   { name: 'Home', path: Routes.HOME },
-  { name: 'Chamados', path: Routes.CALLS, private: true }
-  // { name: 'Loja', path: Routes.STORE, private: true }
+  { name: 'Chamados', path: Routes.CALLS, private: true },
+  { name: 'Loja', path: Routes.STORE, private: true }
 ]
 
 export const generatePath = (
