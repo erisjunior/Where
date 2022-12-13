@@ -1,13 +1,13 @@
 import { hash } from 'bcryptjs'
 
 import { conflictError } from '~/application/common/exceptions'
-import { responseSchema, createdResponse } from '~/application/common/responses'
-import { User, signUpSchema, userSchema } from '~/application/models'
+import { createdResponse, responseSchema } from '~/application/common/responses'
+import { User } from '~/application/models'
 import { procedure } from '~/server'
 
 export const signUp = procedure
-  .input(signUpSchema)
-  .output(responseSchema.extend({ data: userSchema }))
+  .input(User.signUpSchema)
+  .output(responseSchema.extend({ data: User.schema }))
   .mutation(async ({ input, ctx }) => {
     const exists = await ctx.prisma.user.findFirst({
       where: {

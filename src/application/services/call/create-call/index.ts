@@ -1,10 +1,10 @@
-import { responseSchema, createdResponse } from '~/application/common/responses'
-import { Call, callSchema, createCallSchema } from '~/application/models'
+import { createdResponse, responseSchema } from '~/application/common/responses'
+import { Call } from '~/application/models'
 import { protectedProcedure } from '~/server'
 
-export const createCall = protectedProcedure
-  .input(createCallSchema)
-  .output(responseSchema.extend({ data: callSchema }))
+export const upsertCall = protectedProcedure
+  .input(Call.upsertSchema)
+  .output(responseSchema.extend({ data: Call.schemaWithImageAndCategory }))
   .mutation(async ({ input, ctx }) => {
     const response = await ctx.prisma.call.upsert({
       where: {
@@ -14,20 +14,16 @@ export const createCall = protectedProcedure
         title: input.title,
         description: input.description,
         category: {
-          connect: {
-            id: input.categoryId
-          }
+          connect: { id: input.categoryId }
         },
         image: {
           create: {
-            image: input.image,
-            imageKey: input.image
+            image: input.imageUrl,
+            imageKey: input.imageUrl
           }
         },
         user: {
-          connect: {
-            id: ctx.session.user.id
-          }
+          connect: { id: ctx.session.user.id }
         }
       },
       update: {
@@ -35,8 +31,8 @@ export const createCall = protectedProcedure
         description: input.description,
         image: {
           update: {
-            image: input.image,
-            imageKey: input.image
+            image: input.imageUrl,
+            imageKey: input.imageUrl
           }
         }
       },
@@ -44,7 +40,7 @@ export const createCall = protectedProcedure
     })
 
     return createdResponse({
-      message: Call.Messages.CREATED,
+      message: Call.Messages.UPSERTED,
       data: response
     })
   })

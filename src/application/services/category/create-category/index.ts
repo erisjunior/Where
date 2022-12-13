@@ -1,14 +1,10 @@
-import { responseSchema, createdResponse } from '~/application/common/responses'
-import {
-  Category,
-  categorySchema,
-  createCategorySchema
-} from '~/application/models'
+import { createdResponse, responseSchema } from '~/application/common/responses'
+import { Category } from '~/application/models'
 import { protectedProcedure } from '~/server'
 
-export const createCategory = protectedProcedure
-  .input(createCategorySchema)
-  .output(responseSchema.extend({ data: categorySchema }))
+export const upsertCategory = protectedProcedure
+  .input(Category.upsertSchema)
+  .output(responseSchema.extend({ data: Category.schema }))
   .mutation(async ({ input, ctx }) => {
     const response = await ctx.prisma.category.upsert({
       where: {
@@ -23,7 +19,7 @@ export const createCategory = protectedProcedure
     })
 
     return createdResponse({
-      message: Category.Messages.CREATED,
+      message: Category.Messages.UPSERTED,
       data: response
     })
   })

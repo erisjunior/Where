@@ -1,20 +1,20 @@
 import { z } from 'zod'
 
-export const categorySchema = z.object({
-  id: z.string(),
-  name: z.string()
-})
-
-export const createCategorySchema = z.object({
-  id: z.string().optional(),
-  name: z.string()
-})
-
 export namespace Category {
-  export type Model = z.infer<typeof categorySchema>
+  export const schema = z.object({
+    id: z.string(),
+    name: z.string()
+  })
+  export const upsertSchema = z.object({
+    id: z.string().optional(),
+    name: z.string()
+  })
+
+  export type Model = z.infer<typeof schema>
+  export type UpsertModel = z.infer<typeof upsertSchema>
 
   export enum Messages {
-    CREATED = 'Category created successfully',
+    UPSERTED = 'Category created or updated successfully',
     LISTED = 'Categories listed successfully'
   }
 

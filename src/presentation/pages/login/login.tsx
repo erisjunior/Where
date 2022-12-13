@@ -6,7 +6,7 @@ import type { GetServerSideProps } from 'next'
 import { getSession, signIn } from 'next-auth/react'
 import Link from 'next/link'
 
-import { User, signInSchema } from '~/application/models'
+import { User } from '~/application/models'
 import { classNames } from '~/presentation/common/helpers'
 import { Routes } from '~/presentation/common/router'
 import { Input } from '~/presentation/components'
@@ -32,11 +32,11 @@ export const LoginGetServerSideProps: GetServerSideProps = async ({ req }) => {
 }
 
 const Login = () => {
-  const formMethods = useForm<User.SignIn>({
-    resolver: zodResolver(signInSchema)
+  const formMethods = useForm<User.SignInModel>({
+    resolver: zodResolver(User.signInSchema)
   })
 
-  const onSubmit = useCallback(async (data: User.SignIn) => {
+  const onSubmit = useCallback(async (data: User.SignInModel) => {
     await signIn('credentials', { ...data, callbackUrl: Routes.CALLS })
   }, [])
 

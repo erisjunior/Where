@@ -10,7 +10,11 @@ import { useGetCallsQuery } from '~/presentation/hooks'
 
 const ListCalls = () => {
   const { data: session } = useSession()
-  const { data, isLoading, refetch } = useGetCallsQuery({})
+  const {
+    data: calls,
+    isLoading,
+    refetch
+  } = useGetCallsQuery({}, { enabled: false })
 
   useEffect(() => {
     if (!session) return
@@ -36,10 +40,10 @@ const ListCalls = () => {
       </div>
       <div className='grid mt-5 gap-2'>
         <span className='w-fit bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-indigo-200 dark:text-indigo-900'>
-          {data?.data.length ?? 0} Chamados
+          {calls?.data.length ?? 0} Chamados
         </span>
         {isLoading && <p>Carregando...</p>}
-        {data?.data.map((call) => (
+        {calls?.data.map((call) => (
           <Link
             key={call.id}
             href={generatePath(Routes.CALL, { id: call.id })}

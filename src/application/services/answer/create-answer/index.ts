@@ -1,15 +1,11 @@
 import { conflictError } from '~/application/common/exceptions'
-import { responseSchema, createdResponse } from '~/application/common/responses'
-import {
-  Answer,
-  answerDefaultSchema,
-  createAnswerSchema
-} from '~/application/models'
+import { createdResponse, responseSchema } from '~/application/common/responses'
+import { Answer } from '~/application/models'
 import { protectedProcedure } from '~/server'
 
 export const createAnswer = protectedProcedure
-  .input(createAnswerSchema)
-  .output(responseSchema.extend({ data: answerDefaultSchema }))
+  .input(Answer.createAnswerSchema)
+  .output(responseSchema.extend({ data: Answer.schema }))
   .mutation(async ({ input, ctx }) => {
     const exists = await ctx.prisma.answer.findFirst({
       where: {
@@ -18,21 +14,17 @@ export const createAnswer = protectedProcedure
     })
 
     if (exists) {
-      throw conflictError()
+      throw conflictError(Answer.Messages.CONFLICT)
     }
 
     const response = await ctx.prisma.answer.create({
       data: {
         message: input.message,
         call: {
-          connect: {
-            id: input.callId
-          }
+          connect: { id: input.callId }
         },
         store: {
-          connect: {
-            id: input.storeId
-          }
+          connect: { id: input.storeId }
         }
       }
     })

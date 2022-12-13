@@ -1,12 +1,18 @@
 import { z } from 'zod'
 
-export const stateSchema = z.object({
-  name: z.string(),
-  initials: z.string()
-})
-
 export namespace State {
-  export type Model = z.infer<typeof stateSchema>
+  export const schema = z.object({
+    id: z.string(),
+    name: z.string(),
+    initial: z.string().length(2)
+  })
+  export const createSchema = z.object({
+    name: z.string(),
+    initial: z.string().length(2)
+  })
+
+  export type Model = z.infer<typeof schema>
+  export type CreateModel = z.infer<typeof createSchema>
 
   export enum Messages {
     CREATED = 'State created successfully'

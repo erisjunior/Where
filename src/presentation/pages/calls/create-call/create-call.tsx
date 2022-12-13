@@ -5,18 +5,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
-import { createCallSchema } from '~/application/models'
+import { Call } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { Button, Input } from '~/presentation/components'
 import {
-  useCreateCallMutation,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
+  useUpsertCallMutation
 } from '~/presentation/hooks'
 
 const inputClass =
   'relative block w-full rounded mt-2 appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 
-const formSchema = createCallSchema.omit({ categoryId: true })
+const formSchema = Call.upsertSchema.omit({ categoryId: true })
 type Form = z.infer<typeof formSchema>
 
 export default function CreateCall() {
@@ -29,7 +29,7 @@ export default function CreateCall() {
 
   const [category, setCategory] = useState('')
 
-  const { mutateAsync: createCall } = useCreateCallMutation()
+  const { mutateAsync: upsertCall } = useUpsertCallMutation()
 
   useEffect(() => {
     if ((categories?.data.length ?? 0) > 0) {
@@ -40,11 +40,11 @@ export default function CreateCall() {
   const onSubmit = useCallback(
     async (data: Form) => {
       try {
-        await createCall({ ...data, categoryId: category })
+        await upsertCall({ ...data, categoryId: category })
         router.push(Routes.CALLS)
       } catch (error) {}
     },
-    [createCall, category]
+    [upsertCall, category]
   )
 
   return (

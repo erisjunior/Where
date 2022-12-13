@@ -11,9 +11,7 @@ const StoreCalls = ({
   category: string
   storeId: string
 }) => {
-  const { data: calls } = useGetCallsQuery({
-    category: category
-  })
+  const { data: calls } = useGetCallsQuery({ category })
 
   const { mutateAsync: createAnswer } = useCreateAnswerMutation()
 

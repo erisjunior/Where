@@ -6,7 +6,7 @@ import type { GetServerSideProps } from 'next'
 import { getSession, signIn } from 'next-auth/react'
 import Link from 'next/link'
 
-import { signUpSchema, User } from '~/application/models'
+import { User } from '~/application/models'
 import { classNames } from '~/presentation/common/helpers'
 import { Routes } from '~/presentation/common/router'
 import { Input } from '~/presentation/components'
@@ -35,14 +35,14 @@ export const RegisterGetServerSideProps: GetServerSideProps = async ({
 }
 
 export default function Register() {
-  const formMethods = useForm<User.SignUp>({
-    resolver: zodResolver(signUpSchema)
+  const formMethods = useForm<User.SignUpModel>({
+    resolver: zodResolver(User.signUpSchema)
   })
 
   const { mutateAsync: signUp } = useSignUpMutation()
 
   const onSubmit = useCallback(
-    async (data: User.SignUp) => {
+    async (data: User.SignUpModel) => {
       try {
         await signUp(data)
         await signIn('credentials', {

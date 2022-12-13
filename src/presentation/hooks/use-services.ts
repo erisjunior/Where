@@ -7,11 +7,11 @@ export const {
 
   createAnswer: { useMutation: useCreateAnswerMutation },
 
-  createCall: { useMutation: useCreateCallMutation },
+  upsertCall: { useMutation: useUpsertCallMutation },
   getCalls: { useQuery: useGetCallsQuery },
   getCall: { useQuery: useGetCallQuery },
 
-  createCategory: { useMutation: useCreateCategoryMutation },
+  upsertCategory: { useMutation: useUpsertCategoryMutation },
   getCategories: { useQuery: useGetCategoriesQuery },
 
   createStore: { useMutation: useCreateStoreMutation },

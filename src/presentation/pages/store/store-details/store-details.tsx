@@ -13,7 +13,13 @@ import StoreCalls from './store-calls'
 const StoreDetails = () => {
   const { data: session } = useSession()
 
-  const { data, isLoading, refetch } = useGetStoreQuery()
+  const {
+    data: store,
+    isLoading,
+    refetch
+  } = useGetStoreQuery(undefined, {
+    enabled: false
+  })
 
   useEffect(() => {
     if (!session) return
@@ -24,7 +30,7 @@ const StoreDetails = () => {
     <div className='flex flex-col p-2 sm:p-6 lg:p-8'>
       {isLoading ? (
         <p>Carregando...</p>
-      ) : data?.data ? (
+      ) : store?.data ? (
         <div>
           <div className='flex flex-col'>
             <div className='flex items-center'>
@@ -36,18 +42,18 @@ const StoreDetails = () => {
                 height={40}
               />
               <h2 className='text-2xl mb-2 lg:mb-0 font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight'>
-                {data?.data.fantasyName}
+                {store?.data.fantasyName}
               </h2>
             </div>
             <p className='text-xl mb-2 lg:mb-0 text-gray-700 sm:truncate'>
-              {data?.data.socialName}
+              {store?.data.socialName}
             </p>
             <p className='text-md mb-2 lg:mb-0 text-gray-500 sm:truncate'>
-              CNPJ: {data?.data.cnpj}
+              CNPJ: {store?.data.cnpj}
             </p>
             <StoreCalls
-              category={data.data.categories[0].id}
-              storeId={data.data.id}
+              category={store.data.categories[0].id}
+              storeId={store.data.id}
             />
           </div>
         </div>

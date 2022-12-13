@@ -1,28 +1,32 @@
-import { responseSchema, createdResponse } from '~/application/common/responses'
-import {
-  Store,
-  createStoreSchema,
-  storeSchemaWithCategoriesAndImage
-} from '~/application/models'
+import { conflictError } from '~/application/common/exceptions'
+import { createdResponse, responseSchema } from '~/application/common/responses'
+import { Store } from '~/application/models'
 import { protectedProcedure } from '~/server'
 
 export const createStore = protectedProcedure
-  .input(createStoreSchema)
-  .output(responseSchema.extend({ data: storeSchemaWithCategoriesAndImage }))
+  .input(Store.createSchema)
+  .output(responseSchema.extend({ data: Store.schemaWithImageAndCategories }))
   .mutation(async ({ input, ctx }) => {
     const { categoryId, ...store } = input
+
+    const exists = await ctx.prisma.store.findFirst({
+      where: {
+        OR: [{ cnpj: store.cnpj }, { socialName: store.socialName }]
+      }
+    })
+
+    if (exists) {
+      throw conflictError(Store.Messages.CONFLICT)
+    }
+
     const response = await ctx.prisma.store.create({
       data: {
         ...store,
         categories: {
-          connect: {
-            id: categoryId
-          }
+          connect: { id: categoryId }
         },
         user: {
-          connect: {
-            id: ctx.session.user.id
-          }
+          connect: { id: ctx.session.user.id }
         },
         image: {
           create: {
@@ -33,10 +37,7 @@ export const createStore = protectedProcedure
           }
         }
       },
-      include: {
-        categories: true,
-        image: true
-      }
+      include: Store.prisma.includeImageAndCategories
     })
 
     return createdResponse({

@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
-export const imageSchema = z.object({
-  id: z.string(),
-  image: z.string(),
-  imageKey: z.string()
-})
-
 export namespace Image {
-  export type Model = z.infer<typeof imageSchema>
+  export const schema = z.object({
+    id: z.string(),
+    image: z.string(),
+    imageKey: z.string()
+  })
+
+  export type Model = z.infer<typeof schema>
 
   export enum Messages {
     CREATED = 'Image created successfully'

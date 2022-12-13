@@ -2,7 +2,7 @@ import { compare } from 'bcryptjs'
 import { NextAuthOptions } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
-import { signInSchema } from '~/application/models'
+import { User } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { prisma } from '~/server/prisma'
 
@@ -21,7 +21,9 @@ export const nextAuthOptions: NextAuthOptions = {
         }
       },
       authorize: async (credentials) => {
-        const { email, password } = await signInSchema.parseAsync(credentials)
+        const { email, password } = await User.signInSchema.parseAsync(
+          credentials
+        )
 
         const user = await prisma.user.findFirst({
           where: { email }

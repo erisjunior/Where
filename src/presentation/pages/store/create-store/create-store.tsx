@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { z } from 'zod'
 
-import { createStoreSchema } from '~/application/models'
+import { Store } from '~/application/models'
 import { Routes } from '~/presentation/common/router'
 import { Button, Input } from '~/presentation/components'
 import {
@@ -16,7 +16,7 @@ import {
 const inputClass =
   'relative block w-full rounded mt-2 appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
 
-const formSchema = createStoreSchema.omit({ categoryId: true })
+const formSchema = Store.createSchema.omit({ categoryId: true })
 type Form = z.infer<typeof formSchema>
 
 export default function CreateStore() {
@@ -25,9 +25,9 @@ export default function CreateStore() {
     resolver: zodResolver(formSchema)
   })
 
-  const { data: categories } = useGetCategoriesQuery()
-
   const [category, setCategory] = useState('')
+
+  const { data: categories } = useGetCategoriesQuery()
 
   const { mutateAsync: createStore } = useCreateStoreMutation()
 

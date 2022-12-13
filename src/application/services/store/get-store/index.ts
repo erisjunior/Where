@@ -1,28 +1,23 @@
 import { responseSchema, successResponse } from '~/application/common/responses'
-import { Store, storeSchemaWithCategoriesAndImage } from '~/application/models'
+import { Store } from '~/application/models'
 import { protectedProcedure } from '~/server'
 
 export const getStore = protectedProcedure
   .output(
     responseSchema.extend({
-      data: storeSchemaWithCategoriesAndImage.nullable()
+      data: Store.schemaWithImageAndCategories.nullable()
     })
   )
   .query(async ({ ctx }) => {
     const response = await ctx.prisma.store.findFirst({
       where: {
-        user: {
-          id: ctx.session.user.id
-        }
+        user: { id: ctx.session.user.id }
       },
-      include: {
-        categories: true,
-        image: true
-      }
+      include: Store.prisma.includeImageAndCategories
     })
 
     return successResponse({
-      message: Store.Messages.LISTED,
+      message: Store.Messages.DETAILS,
       data: response
     })
   })
